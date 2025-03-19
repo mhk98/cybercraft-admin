@@ -1,6 +1,10 @@
 import React from "react";
-import { FaSearch, FaSyncAlt } from "react-icons/fa";
+import { FaRegEye, FaSearch, FaSyncAlt } from "react-icons/fa";
 import { FaMousePointer, FaThLarge, FaDownload, FaPlus } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { PiDownloadSimpleBold, PiPlusBold } from "react-icons/pi";
+import Navbar from "./Navbar";
+import { LuMousePointer2 } from "react-icons/lu";
 const employees = [
   { id: 1, empId: "123456789", name: "Md. Shoaib Shifat", email: "abdulhadi@gmail.com", department: "IT", designation: "Developer" },
   { id: 2, empId: "987456321", name: "MD Masuk Kabir", email: "rakibhasan@gmail.com", department: "Construction", designation: "Site Engineer" },
@@ -16,19 +20,22 @@ const employees = [
 
 const EmployeeTable = () => {
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen ">
+      <Navbar/>
+      <div className="bg-gray-100 p-6">
       <div className="flex justify-between py-4">
         <h2 className="text-2xl font-semibold">Employees</h2>
         <div className="flex space-x-2 bg-gray-100 rounded-lg">
       {[
-        { icon: <FaMousePointer size={18} />, key: "cursor" },
+        { icon: <LuMousePointer2  size={18} />, key: "cursor" },
         { icon: <FaThLarge size={18} />, key: "grid" },
-        { icon: <FaDownload size={18} />, key: "download" },
-        { icon: <FaPlus size={18} />, key: "plus" },
+        { icon: <PiDownloadSimpleBold size={18} />, key: "download" },
+        { icon: <PiPlusBold  size={18} />, key: "plus" },
       ].map(({ icon, key }) => (
         <button
           key={key}
-          className="p-2 border border-[#607FAD] rounded-md transition"
+          className=" rounded-md transition text-[#607FAD]"
+          style={{border:"1px solid #607FAD"}}
         >
           {icon}
         </button>
@@ -78,15 +85,16 @@ const EmployeeTable = () => {
                   <td className="border border-gray-200 p-3">{emp.department}</td>
                   <td className="border border-gray-200 p-3">{emp.designation}</td>
                   <td className="border border-gray-200 p-3 flex space-x-2">
-                    <button className="text-blue-600">🔽</button>
-                    <button className="text-green-600">👁</button>
-                    <button className="text-red-600">🗑</button>
+                    <button className="text-blue-600"><PiDownloadSimpleBold/> </button>
+                    <button className="text-green-600"><FaRegEye /></button>
+                    <button className="text-red-600"><MdDelete /></button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </div>
   );
