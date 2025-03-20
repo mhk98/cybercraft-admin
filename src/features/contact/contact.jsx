@@ -48,9 +48,8 @@ export const contactApi = createApi({
     }),
 
     getAllContact: build.query({
-      query: ({ page, limit, startDate, endDate, productId,}) => ({
+      query: () => ({
         url: "/contact",
-        params: { page, limit, startDate, endDate, productId,},  // Pass the page and limit as query params
       }),
       providesTags: ["contact"],
       refetchOnMountOrArgChange: true,
