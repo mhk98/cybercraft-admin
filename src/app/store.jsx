@@ -2,6 +2,7 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import { contactApi } from "../features/contact/contact";
+import { authApi } from "../features/auth/auth";
 
 
 
@@ -15,6 +16,7 @@ import { contactApi } from "../features/contact/contact";
 const store = configureStore({
   reducer: {
     [contactApi.reducerPath]: contactApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
 
    
   
@@ -30,6 +32,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
         contactApi.middleware,
+        authApi.middleware,
       
     ),
 });

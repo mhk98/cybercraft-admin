@@ -2,9 +2,26 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import logo from "../src/assets/Asset 1 1.png"
 import { Link } from "react-router-dom";
+import { useUserLoginMutation } from "./features/auth/auth";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
+
+  const [userLogin] = useUserLoginMutation()
+  const { register, formState: { errors }, handleSubmit } = useForm();
+  const onSubmit = async(data) => {
+    const res = await userLogin(data)
+    if(res.data.status === "Success"){
+      console.log(res.data.data)
+      localStorage.setItem("token", res.data.data.accessToken)
+      navigate("/")
+    }
+  }
+
+
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
@@ -19,15 +36,17 @@ const Login = () => {
 
         {/* Right Section */}
         <div className="w-1/2 p-6">
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Email */}
             <div>
               <label className="block text-sm text-[#345485] text-start">Email address</label>
               <input 
+              {...register("email", { required: true })} 
                 type="email" 
                 placeholder="Your email" 
                 className="w-full p-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none"
               />
+              {errors.email?.type === 'required' && <p role="alert">Email is required</p>}
             </div>
 
             {/* Password */}
@@ -35,12 +54,15 @@ const Login = () => {
               <label className="block text-sm text-[#345485] text-start">Password</label>
               <input 
                 type={showPassword ? "text" : "password"} 
+              {...register("password", { required: true })} 
                 placeholder="Password" 
                 className="w-full p-2 mt-1 border rounded-md focus:ring-2 focus:ring-blue-400 outline-none" 
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-7 text-gray-600">
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
+              {errors.password?.type === 'required' && <p role="alert">Password is required</p>}
+
             </div>
 
             {/* Remember Me & Forgot Password */}
