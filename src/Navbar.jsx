@@ -1,15 +1,28 @@
-import React, { useState } from "react";
-import { FaBell, FaSearch } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from "react";
+import { FaBell, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import logo from "../src/assets/logo.png";
 import profile from "../src/assets/profile.png";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  console.log("token", token);
+  // Handle click outside dropdown to close
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -17,23 +30,41 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex items-center justify-between bg-white px-6 py-3 w-full">
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <img src={logo} alt="Logo" style={{ width: "118px", height: "52px" }} />
+    <nav className="flex items-center justify-between bg-white px-6 py-3 w-full shadow-md">
+      {/* Logo & Mobile Menu Button */}
+      <div className="flex items-center space-x-4">
+        <img src={logo} alt="Logo" className="w-[118px] h-[52px]" />
+        
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-700 focus:outline-none"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+        </button>
       </div>
 
-      {/* Profile & Notifications */}
+      {/* Search Bar (Hidden on small screens) */}
+      <div className="relative w-96 hidden md:block lg:hidden">
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full p-2 pl-4 pr-10 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <FaSearch className="absolute right-3 top-3 text-gray-500" />
+      </div>
+
+      {/* Right Section: Notifications & Profile */}
       <div className="flex items-center space-x-4">
-        {/* Search Bar */}
-        <div className="relative w-96 hidden md:block">
-          <input
-            type="text"
-            placeholder="Search"
-            className="w-full p-2 pl-4 pr-10 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <FaSearch className="absolute right-3 top-3 text-gray-500" />
-        </div>
+
+      <div className=" w-96 hidden md:block lg:flex hidden">
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full p-2 pl-4 pr-10 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <FaSearch className="absolute right-3 top-3 text-gray-500" />
+      </div>
 
         {/* Notification Bell */}
         <div className="relative">
@@ -44,7 +75,7 @@ const Navbar = () => {
         </div>
 
         {/* Profile Section */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <div
             className="flex items-center space-x-2 cursor-pointer"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -68,7 +99,7 @@ const Navbar = () => {
                 {token ? (
                   <li
                     className="px-4 py-1 cursor-pointer hover:bg-gray-100"
-                    onClick={handleLogout} // ✅ Fix: Remove function execution
+                    onClick={handleLogout}
                   >
                     Logout
                   </li>
@@ -82,6 +113,39 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu (Hidden on Desktop) */}
+      {isMobileMenuOpen && (
+        <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center space-y-4 py-4 md:hidden">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-11/12 p-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <Link
+            to="/notifications"
+            className="flex items-center space-x-2 text-gray-700"
+          >
+            <FaBell size={18} />
+            <span>Notifications</span>
+          </Link>
+          {token ? (
+            <button
+              onClick={handleLogout}
+              className="text-red-600 bg-gray-100 px-4 py-2 rounded-md w-11/12 text-center"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-blue-600 bg-gray-100 px-4 py-2 rounded-md w-11/12 text-center"
+            >
+              Login
+            </Link>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
