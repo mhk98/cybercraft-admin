@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useUserLoginMutation } from "./features/auth/auth";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +18,7 @@ const Login = () => {
     if(res.data.status === "Success"){
       console.log(res.data.data)
       localStorage.setItem("token", res.data.data.accessToken)
+      toast.success("Logged in successfully")
       navigate("/")
     }
   }

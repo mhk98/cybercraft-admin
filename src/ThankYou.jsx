@@ -1,24 +1,27 @@
+import { Link } from "react-router-dom";
 import logo from "../src/assets/Asset 1 1.png"
+import Navbar from "./Navbar";
 
 export default function ThankYou() {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+     <div>
+      <Navbar/>
+       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
         <div className="bg-white p-6 rounded-lg shadow-md text-center max-w-sm">
           <img
             src={logo}
             alt="CyberCraft Bangladesh"
-            className="mx-auto mb-4 w-24"
+            className="mx-auto mb-4 w-36"
           />
-          <h2 className="text-xl font-semibold text-gray-700">CyberCraft</h2>
-          <p className="text-gray-600 text-sm">Bangladesh</p>
           <p className="mt-4 text-gray-700">
             Thank you so much for your nice contribution for today.
           </p>
-          <button className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          <Link to="/login" className="mt-6 btn px-4 py-2 rounded-md " style={{backgroundColor:"#345485", color:"white"}}>
             Go Back to Login
-          </button>
+          </Link>
         </div>
       </div>
+     </div>
     );
   }
   

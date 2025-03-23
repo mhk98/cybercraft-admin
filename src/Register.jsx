@@ -30,6 +30,7 @@ const Register = () => {
     const res = await userRegister(data)
 
     if(res.data.status === "Success"){
+      toast.success("Successfully signed up")
       navigate("/login")
     }
   };
