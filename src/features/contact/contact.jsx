@@ -21,32 +21,6 @@ export const contactApi = createApi({
 
   tagTypes: ["contact"], // Define the tag type for invalidation and refetching
   endpoints: (build) => ({
-    createContact: build.mutation({
-      query: (data) => ({
-        url: "/contact/create",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["contact"],  // Invalidate the product tag after this mutation
-    }),
-
-    deleteContact: build.mutation({
-      query: (id) => ({
-        url: `/contact/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["contact"],  // Invalidate the product tag after deletion
-    }),
-
-    updateContact: build.mutation({
-      query: ({ id, data }) => ({
-        url: `/contact/${id}`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["contact"],  // Invalidate the product tag after this mutation
-    }),
-
     getAllContact: build.query({
       query: () => ({
         url: "/contact",
@@ -62,8 +36,5 @@ export const contactApi = createApi({
 });
 
 export const {
-  useCreateContactMutation,
   useGetAllContactQuery,
-  useDeleteContactMutation,
-  useUpdateContactMutation
 } = contactApi;

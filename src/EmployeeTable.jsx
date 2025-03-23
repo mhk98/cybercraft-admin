@@ -352,6 +352,9 @@ const EmployeeTable = () => {
                       <td className="border border-gray-200 p-3">{emp.email}</td>
                       <td className="border border-gray-200 p-3">{emp.message}</td>
                       <td className="border border-gray-200 p-3 flex space-x-2">
+                      <button className="text-blue-600">
+                       <PiDownloadSimpleBold />
+                      </button>
                       <button
                       className="text-green-600"
                       onClick={() => setSelectedEmployee(emp)}
