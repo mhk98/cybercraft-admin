@@ -3,6 +3,7 @@ import { FaBell, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import logo from "../src/assets/logo.png";
 import profile from "../src/assets/profile.png";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,6 +24,23 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+
+  const [userInfo, setUserInfo] = useState("");
+
+
+   useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          console.log("decodedToken", decodedToken)
+          setUserInfo(decodedToken);
+        } catch (error) {
+          console.error("Invalid token", error);
+        }
+      }
+    }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -81,8 +99,8 @@ const Navbar = () => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <div>
-              <p className="text-sm font-semibold text-gray-700">Arya Stark</p>
-              <p className="text-xs text-gray-500">Admin</p>
+              <p className="text-sm font-semibold text-gray-700">{userInfo.fullName}</p>
+              <p className="text-xs text-gray-500">{userInfo.role}</p>
             </div>
 
             <img
