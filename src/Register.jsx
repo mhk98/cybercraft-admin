@@ -4,6 +4,7 @@ import logo from "../src/assets/Asset 1 1.png";
 import { Link } from "react-router-dom";
 import { useUserRegisterMutation } from "./features/auth/auth";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
